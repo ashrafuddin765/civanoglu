@@ -18,19 +18,31 @@ class PropertyController extends Controller {
 
         $latest_properties = Property::latest();
 
-        if ( !empty( $request->type ) ) {
-            $latest_properties = $latest_properties->where( 'type', $request->type );
+        if ( '' != $request->type  ) {
+            $latest_properties = $latest_properties->where( 'type', (int) $request->type );
         }
-        if ( !empty( $request->sale ) ) {
+
+        if ( '' != $request->sale  ) {
             $latest_properties = $latest_properties->where( 'sale', $request->sale );
         }
+
+        if ( !empty( $request->bedrooms ) ) {
+            $latest_properties = $latest_properties->where( 'bedrooms', $request->bedrooms );
+        }
+
+        if ( !empty( $request->search ) ) {
+            $latest_properties = $latest_properties->where( 'name','like',  "%{$request->search}%" );
+
+        }
+
+
         if ( !empty( $request->price ) ) {
             switch ($request->price) {
                 case '100000':
                     $latest_properties = $latest_properties->where( 'price','<', 100000 );
                     break;
                 case '200000':
-                    $latest_properties = $latest_properties->where( 'price','>=', 100000 )->whire('price', '<=', 200000);
+                    $latest_properties = $latest_properties->where( 'price','>=', 100000 )->where('price', '<=', 200000);
                     break;
                 case '300000':
                     $latest_properties = $latest_properties->where( 'price','>=', 200000 )->where( 'price','<=', 300000 );
@@ -45,10 +57,7 @@ class PropertyController extends Controller {
             }
 
         }
-        if ( !empty( $request->bedrooms ) ) {
-            $latest_properties = $latest_properties->where( 'bedrooms', $request->bedrooms );
-        }
-
+  
         $latest_properties = $latest_properties->paginate( 12 );
         return view( 'property.index ', ['latest_properties' => $latest_properties] );
     }

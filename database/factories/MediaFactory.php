@@ -15,7 +15,7 @@ class MediaFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'https://picsum.photos/id/237/1200/800',
+            'name' => 'https://picsum.photos/seed/picsum/1200/800',
             'property_id' => Property::all()->random()->id ,
 
         ];
