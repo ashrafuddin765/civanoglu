@@ -900,6 +900,9 @@ select {
 .w-48 {
   width: 12rem;
 }
+.w-6\/12 {
+  width: 50%;
+}
 .min-w-max {
   min-width: -webkit-max-content;
   min-width: -moz-max-content;

@@ -15,7 +15,7 @@
     <div class="-mt-10">
         <div class="container">
             <div class="rounded-lg bg-white p-4 relative z-20 shadow-lg">
-                @include('components.property-search-form')
+                @include('components.property-search-form', ['locations'=>$locations])
             </div>
 
         </div>
