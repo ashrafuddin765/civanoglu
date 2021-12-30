@@ -180,6 +180,9 @@
                 <div class="px-4 py-5 text-left bg-gray-300 my-5">
                     <h1 class="text-2xl font-normal leading-none mb-5">Enquire about this property</h1>
 
+                    @if (Session::get('message'))
+                        <p class=" mb-6 p-3 bg-green-100 text-green-700">{{ Session::get('message') }}</p>
+                    @endif
                     <form action="{{ route('property-inquiry', $property->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -187,7 +190,8 @@
                         <div class="">
                             <label class="inputLabel" for="name">Name <span
                                     class="text-red-800 font-serif">*</span></label>
-                            <input class="inputField" type="text" id="name" value="{{old('name')}}" name="name" placeholder="First Name">
+                            <input class="inputField" type="text" id="name" value="{{ old('name') }}" name="name"
+                                placeholder="First Name">
                             @error('name')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
@@ -196,27 +200,29 @@
                         <div class="mt-5">
                             <label class="inputLabel" for="phone">Phone <span
                                     class="text-red-800 font-serif">*</span></label>
-                            <input  value="{{old('phone')}}" class="inputField" type="text" id="phone" name="phone" placeholder="Phone">
+                            <input value="{{ old('phone') }}" class="inputField" type="text" id="phone"
+                                name="phone" placeholder="Phone">
                             @error('phone')
-                            <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
-                        @enderror
+                                <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mt-5">
                             <label class="inputLabel" for="email">Email <span
                                     class="text-red-800 font-serif">*</span></label>
-                            <input  value="{{old('email')}}" class="inputField" type="email" id="email" name="email" placeholder="E-mail">
+                            <input value="{{ old('email') }}" class="inputField" type="email" id="email"
+                                name="email" placeholder="E-mail">
                             @error('email')
-                            <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
-                        @enderror
+                                <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mt-5">
                             <label class="inputLabel" for="message">Message <span
                                     class="text-red-800 font-serif">*</span></label>
                             <textarea class="inputField" id="message" name="message" rows="4"
-                                placeholder="I'm interested in this property">{{old('message')}}</textarea>
-                                @error('message')
+                                placeholder="I'm interested in this property">{{ old('message') }}</textarea>
+                            @error('message')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
                         </div>
