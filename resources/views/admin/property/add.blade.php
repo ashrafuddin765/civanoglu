@@ -13,7 +13,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="create-property" method="POST" class="p-6 bg-white border-b border-gray-200">@csrf
+                <form action="{{route('create-property')}}" method="POST" class="p-6 bg-white border-b border-gray-200" enctype="multipart/form-data">@csrf
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="name">Title</label>
@@ -39,6 +39,13 @@
                             <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="mb-6">
+                        <label class="civanoglu-label" for="gallery_image">Gallery image</label>
+                        <input type="file" name="gallery_image[]" class="civanoglu-input" id="gallery_image" multiple required>
+                        @error('gallery_image')
+                            <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="location_id">Location</label>
@@ -55,7 +62,7 @@
                         </div>
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="price">Price</label>
-                            <input type="text" name="price" class="civanoglu-input" id="price"
+                            <input type="number" name="price" class="civanoglu-input" id="price"
                                 value="{{ old('price') }}" required>
                             @error('price')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
@@ -86,16 +93,31 @@
                         </div>
                     </div>
                     <div class="flex -mx-4 mb-6">
+
+                        <div class="flex-1 px-4">
+                            <label class="civanoglu-label" for="drawing_rooms">Drawing rooms</label>
+                            <select class="civanoglu-input" name="drawing_rooms" id="drawing_rooms">
+                                <option value="">Select one</option>
+
+                                @for ($x = 1; $x <= 3; $x++)
+                                    <option {{ old('drawing_rooms') == $x ? 'selected="selected"' : '' }}
+                                        value="{{ $x }}">{{ $x }}</option>
+                                @endfor
+                            </select>
+
+                            @error('drawing_rooms')
+                                <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="bedrooms">Bedrooms</label>
                             <select class="civanoglu-input" name="bedrooms" id="bedrooms">
                                 <option value="">Select bedrooms</option>
-                                <option {{ old('bedrooms') == '1+1' ? 'selected' : '' }} value="1+1">1+1</option>
-                                <option {{ old('bedrooms') == '2+1s' ? 'selected' : '' }} value="2+1">2+1</option>
-                                <option {{ old('bedrooms') == '3+1s' ? 'selected' : '' }} value="3+1">3+1</option>
-                                <option {{ old('bedrooms') == '4+1s' ? 'selected' : '' }} value="4+1">4+1</option>
-                                <option {{ old('bedrooms') == '5+1s' ? 'selected' : '' }} value="5+1">5+1</option>
-                                <option {{ old('bedrooms') == '6+1s' ? 'selected' : '' }} value="6+1">6+1</option>
+                                @for ($x = 1; $x <= 8; $x++)
+                                    <option {{ old('bedrooms') == $x ? 'selected' : '' }}
+                                        value="{{ $x }}">{{ $x }}</option>
+                                @endfor
                             </select>
 
                             @error('bedrooms')
@@ -107,12 +129,10 @@
                             <label class="civanoglu-label" for="bathrooms">Bathrooms</label>
                             <select class="civanoglu-input" name="bathrooms" id="bathrooms">
                                 <option value="">Select bedrooms</option>
-                                <option {{ old('bathrooms') == '1' ? 'selected' : '' }} value="1">1</option>
-                                <option {{ old('bathrooms') == '2' ? 'selected' : '' }} value="2">2</option>
-                                <option {{ old('bathrooms') == '3' ? 'selected' : '' }} value="3">3</option>
-                                <option {{ old('bathrooms') == '4' ? 'selected' : '' }} value="4">4</option>
-                                <option {{ old('bathrooms') == '5' ? 'selected' : '' }} value="5">5</option>
-                                <option {{ old('bathrooms') == '6' ? 'selected' : '' }} value="6">6</option>
+                                @for ($x = 1; $x <= 6; $x++)
+                                    <option {{ old('bathrooms') == $x ? 'selected' : '' }}
+                                        value="{{ $x }}">{{ $x }}</option>
+                                @endfor
                             </select>
 
                             @error('bathrooms')
@@ -158,16 +178,16 @@
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="overview">Overview</label>
-                            <textarea class="civanoglu-label" name="overview" id="overview" cols="30"
-                                rows="10" required>{{ old('overview') }}</textarea>
+                            <textarea class="civanoglu-label" name="overview" id="overview" cols="30" rows="10"
+                                required>{{ old('overview') }}</textarea>
                             @error('overview')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="overview_tr">Overview TR</label>
-                            <textarea class="civanoglu-label" name="overview_tr" id="overview_tr" cols="30"
-                                rows="10" required>{{ old('overview_tr') }}</textarea>
+                            <textarea class="civanoglu-label" name="overview_tr" id="overview_tr" cols="30" rows="10"
+                                required>{{ old('overview_tr') }}</textarea>
                             @error('overview_tr')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
@@ -194,8 +214,8 @@
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="description">Description</label>
-                            <textarea class="civanoglu-label" name="description" id="description" cols="30"
-                                rows="10" required>{{ old('description') }}</textarea>
+                            <textarea class="civanoglu-label" name="description" id="description" cols="30" rows="10"
+                                required>{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror

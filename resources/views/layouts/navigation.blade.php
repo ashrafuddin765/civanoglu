@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('dash-properties')" :active="request()->routeIs('dash-properties')">
                         {{ __('Properties') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('dash-locations')" :active="request()->routeIs('dash-locations')">
+                        {{ __('Locations') }}
+                    </x-nav-link>
                 </div>
             </div>
 

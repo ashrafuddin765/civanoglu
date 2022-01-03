@@ -56,14 +56,14 @@
                 <div id="slider" class="">
                     <div class="gallery-slider">
                         @foreach ($property->gallery as $gallery)
-                            <div style="background-image: url({{ $gallery->name }})"
+                            <div style="background-image: url(/uploads/{{ $gallery->name }})"
                                 class="single-gallery-item bg-cover bg-center"></div>
                         @endforeach
                     </div>
 
                     <div class="thumbnail-slider">
                         @foreach ($property->gallery as $gallery)
-                            <div style="background-image: url({{ $gallery->name }})"
+                            <div style="background-image: url(/uploads/{{ $gallery->name }})"
                                 class="single-thumbnail-item bg-cover bg-center"></div>
                         @endforeach
                     </div>

@@ -21,6 +21,7 @@ class PropertyFactory extends Factory {
             'sale'           => rand( 0, 1 ),
             'type'           => rand( 0, 2 ),
             'bedrooms'       => rand( 1, 6 ),
+            'drawing_rooms'  => rand( 0, 3 ),
             'bathrooms'      => rand( 1, 5 ),
             'net_sqm'        => rand( 55, 300 ),
             'gross_sqm'      => rand( 65, 450 ),

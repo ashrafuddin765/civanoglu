@@ -13,12 +13,30 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="create-property" method="POST" class="p-6 bg-white border-b border-gray-200">@csrf
+                <div class="p-6">
+                    <h4>Gallery images</h4>
+                    <div class="flex mt-3">
+                        @foreach ($property->gallery as $gallery)
+                            <div style="min-width: 100px;" class="mr-r flex items-center justify-center relative">
+                                <img style="max-width: 100px;" src="/uploads/{{ $gallery->name }}" alt="" />
+
+                                <form action="{{ route('delete-media', $gallery->id) }}" method="post"
+                                    class="absolute right-0 top-0"
+                                    onsubmit="return confirm('Do you really want to delete the image?a')">@csrf
+                                    <button type="submit"
+                                        class="text-white bg-red-600 text-xs px-3 py-1">Delete</button>
+                                </form>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <form action="{{ route('update-property', $property->id)}}" method="POST" class="p-6 bg-white border-b border-gray-200"
+                    enctype="multipart/form-data">@csrf
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="name">Title</label>
                             <input type="text" name="name" class="civanoglu-input" id="name"
-                                value="{{ $property->name }}">
+                                value="{{ $property->name }}" required>
                             @error('name')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
@@ -26,23 +44,35 @@
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="name_tr">Title Turkish</label>
                             <input type="text" name="name_tr" class="civanoglu-input" id="name_tr"
-                                value="{{ $property->name_tr }}">
+                                value="{{ $property->name_tr }}" required>
                             @error('name_tr')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="mb-6">
+                        <div class="pt-3">
+                            <img src="/uploads/{{ $property->featured_image }}" alt="">
+                        </div>
                         <label class="civanoglu-label" for="featured_image">Featured image</label>
-                        <input type="file" name="featured_image" class="civanoglu-input" id="featured_image">
+                        <input type="file" name="featured_image" class="civanoglu-input" id="featured_image" >
                         @error('featured_image')
                             <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="mb-6">
+                        <label class="civanoglu-label" for="gallery_image">Gallery image</label>
+                        <input type="file" name="gallery_image[]" class="civanoglu-input" id="gallery_image" multiple
+                            >
+                        @error('gallery_image')
+                            <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
+                        @enderror
+
+                    </div>
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="location_id">Location</label>
-                            <select class="civanoglu-label" name="location_id" id="location_id">
+                            <select class="civanoglu-label" name="location_id" id="location_id" required>
                                 <option value="">Select location</option>
                                 @foreach ($locations as $location)
                                     <option {{ $property->location->id == $location->id ? 'selected' : '' }}
@@ -55,8 +85,8 @@
                         </div>
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="price">Price</label>
-                            <input type="text" name="price" class="civanoglu-input" id="price"
-                                value="{{ $property->price }}">
+                            <input type="number" name="price" class="civanoglu-input" id="price"
+                                value="{{ $property->price }}" required>
                             @error('price')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
@@ -85,17 +115,33 @@
                             @enderror
                         </div>
                     </div>
+
+
+
                     <div class="flex -mx-4 mb-6">
+                        <div class="flex-1 px-4">
+                            <label class="civanoglu-label" for="drawing_rooms">Drawing rooms</label>
+                            <select class="civanoglu-input" name="drawing_rooms" id="drawing_rooms">
+                                <option value="">Select one</option>
+
+                                @for ($x = 1; $x <= 3; $x++)
+                                    <option {{ $property->drawing_rooms == $x ? 'selected="selected"' : '' }}
+                                        value="{{ $x }}">{{ $x }}</option>
+                                @endfor
+                            </select>
+
+                            @error('drawing_rooms')
+                                <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                            @enderror
+                        </div>
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="bedrooms">Bedrooms</label>
                             <select class="civanoglu-input" name="bedrooms" id="bedrooms">
                                 <option value="">Select bedrooms</option>
-                                <option {{ $property->sale == '1+1' ? 'selected' : '' }} value="1+1">1+1</option>
-                                <option {{ $property->sale == '2+1' ? 'selected' : '' }} value="2+1">2+1</option>
-                                <option {{ $property->sale == '3+1' ? 'selected' : '' }} value="3+1">3+1</option>
-                                <option {{ $property->sale == '4+1' ? 'selected' : '' }} value="4+1">4+1</option>
-                                <option {{ $property->sale == '5+1' ? 'selected' : '' }} value="5+1">5+1</option>
-                                <option {{ $property->sale == '6+1' ? 'selected' : '' }} value="6+1">6+1</option>
+                                @for ($x = 0; $x <= 8; $x++)
+                                    <option {{ $property->bedrooms == $x ? 'selected="selected"' : '' }}
+                                        value="{{ $x }}">{{ $x }}</option>
+                                @endfor
                             </select>
 
                             @error('bedrooms')
@@ -106,13 +152,11 @@
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="bathrooms">Bathrooms</label>
                             <select class="civanoglu-input" name="bathrooms" id="bathrooms">
-                                <option value="">Select bedrooms</option>
-                                <option {{ $property->sale == '1' ? 'selected' : '' }} value="1">1</option>
-                                <option {{ $property->sale == '2' ? 'selected' : '' }} value="2">2</option>
-                                <option {{ $property->sale == '3' ? 'selected' : '' }} value="3">3</option>
-                                <option {{ $property->sale == '4' ? 'selected' : '' }} value="4">4</option>
-                                <option {{ $property->sale == '5' ? 'selected' : '' }} value="5">5</option>
-                                <option {{ $property->sale == '6' ? 'selected' : '' }} value="6">6</option>
+                                <option value="">Select bathrooms</option>
+                                @for ($x = 1; $x <= 6; $x++)
+                                    <option {{ $property->bathrooms == $x ? 'selected="selected"' : '' }}
+                                        value="{{ $x }}">{{ $x }}</option>
+                                @endfor
                             </select>
 
                             @error('bathrooms')
@@ -158,16 +202,16 @@
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="overview">Overview</label>
-                            <textarea class="civanoglu-label" name="overview" id="overview" cols="30"
-                                rows="10">{{ $property->overview }}</textarea>
+                            <textarea class="civanoglu-label" name="overview" id="overview" cols="30" rows="10"
+                                required>{{ $property->overview }}</textarea>
                             @error('overview')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="overview_tr">Overview TR</label>
-                            <textarea class="civanoglu-label" name="overview_tr" id="overview_tr" cols="30"
-                                rows="10">{{ $property->overview_tr }}</textarea>
+                            <textarea class="civanoglu-label" name="overview_tr" id="overview_tr" cols="30" rows="10"
+                                required>{{ $property->overview_tr }}</textarea>
                             @error('overview_tr')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
@@ -194,8 +238,8 @@
                     <div class="flex -mx-4 mb-6">
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="description">Description</label>
-                            <textarea class="civanoglu-label" name="description" id="description" cols="30"
-                                rows="10">{{ $property->description }}</textarea>
+                            <textarea class="civanoglu-label" name="description" id="description" cols="30" rows="10"
+                                required>{{ $property->description }}</textarea>
                             @error('description')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
@@ -203,7 +247,7 @@
                         <div class="flex-1 px-4">
                             <label class="civanoglu-label" for="description_tr">Description TR</label>
                             <textarea class="civanoglu-label" name="description_tr" id="description_tr" cols="30"
-                                rows="10">{{ $property->description_tr }}</textarea>
+                                rows="10" required>{{ $property->description_tr }}</textarea>
                             @error('description_tr')
                                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                             @enderror
