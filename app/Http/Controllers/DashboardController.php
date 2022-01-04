@@ -18,7 +18,7 @@ class DashboardController extends Controller {
     public function properties() {
         $properties = Property::latest()->paginate();
 
-        return view( 'admin.properties', [
+        return view( 'admin.property.index', [
             'properties' => $properties,
         ] );
     }
@@ -165,7 +165,7 @@ class DashboardController extends Controller {
     public function locations() {
         $locations = Location::latest()->paginate();
 
-        return view( 'admin.locations', [
+        return view( 'admin.location.index', [
             'locations' => $locations,
         ] );
     }

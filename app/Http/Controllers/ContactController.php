@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessContactMail;
 use App\Mail\ContactMail;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Mail;
@@ -29,7 +30,9 @@ class ContactController extends Controller {
         $contact->save();
 
         //send user and admin mails
-        Mail::send( new ContactMail($contact) );
+        ProcessContactMail::dispatch($contact);
+   
+
 
         return redirect( route( 'single-property', $property_id ) )->with( ['message' => 'Your message has been sent!'] );
     }

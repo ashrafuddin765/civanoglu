@@ -1,8 +1,0 @@
-# Check every minute for mic input < 100%; if it is, dial it up elegantly
-while true ; do
-    while (( `osascript -e "input volume of (get volume settings)"` > 10 )); do
-        osascript -e "set volume input volume (input volume of (get volume settings) - 2)";
-        sleep 0.01;
-    done;
-    sleep 1;
-done; 

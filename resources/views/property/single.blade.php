@@ -17,7 +17,7 @@
                 <div class="w-8/12">
                     <h2 class="text-3xl text-gray-600">{{ $property->name }}</h2>
                     <h3 class="text-lg mt-2">Price: <span class="text-red-800">
-                            {{ number_format($property->price, 2, ',', ',') }} TL
+                            {{ $property->dynamicCurrency($property->price) }} 
                         </span></h3>
                 </div>
                 <div class="w-3/12">

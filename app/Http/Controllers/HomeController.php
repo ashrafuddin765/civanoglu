@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Models\Page;
 use App\Models\Property;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller {
     //
@@ -16,5 +18,23 @@ class HomeController extends Controller {
             'latest_properties' => $latest_properties,
             'locations'         => $locations,
         ] );
+    }
+
+    public function single( $slug ) {
+        $page = Page::where( 'slug', $slug )->first();
+
+        if ( !empty( $page ) ) {
+            return view( 'page', [
+                'page' => $page,
+            ] );
+        }
+
+        return abort( '404' );
+
+    }
+
+    public function currencyChange( $code ) {
+        Cookie::queue( 'currency', $code );
+        return back();
     }
 }

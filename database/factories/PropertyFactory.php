@@ -15,7 +15,7 @@ class PropertyFactory extends Factory {
         return [
             'name'           => $this->faker->sentence,
             'name_tr'        => $this->faker->sentence,
-            'featured_image' => 'https://picsum.photos/seed/picsum/1200/800',
+            'featured_image' =>  $this->faker->image( 'public/storage/uploads', 1200, 800, null, false ),
             'location_id'    => Location::all()->random()->id,
             'price'          => rand( 100000, 500000 ),
             'sale'           => rand( 0, 1 ),
